@@ -14,101 +14,111 @@
     <Page.Resources>
         <converter:ColorDiffConverter x:Key="colorDiffConverter"/>
         <converter:ColorSimilarConverter x:Key="colorSimilarConverter"/>
+        <converter:ColorToStringConverter x:Key="colorToStringConverter"/>
     </Page.Resources>
 
     <Grid>
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="80"/>
-                <RowDefinition Height="auto"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="80"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
 
-            <Grid x:Name="BackgroundGrid" Grid.ColumnSpan="2" Grid.RowSpan="3" Background="White"/>
-            
-            <Grid x:Name="WhiteOption" Grid.Column="0" Grid.Row="0" Background="White">
-                <i:Interaction.Behaviors>
-                    <i:BehaviorCollection>
-                        <core:EventTriggerBehavior EventName="Tapped" SourceObject="{Binding ElementName=WhiteOption}">
-                            <core:ChangePropertyAction TargetObject="{Binding ElementName=BackgroundGrid}" PropertyName="Background" >
-                                <core:ChangePropertyAction.Value>
-                                    <SolidColorBrush Color="White"/>
-                                </core:ChangePropertyAction.Value>
-                            </core:ChangePropertyAction>
-                        </core:EventTriggerBehavior>
-                    </i:BehaviorCollection>
-                </i:Interaction.Behaviors>
-                <TextBlock Foreground="Black" FontSize="14" VerticalAlignment="Center" HorizontalAlignment="Center" Text="Light (#FFFFFFFF)"/>
-            </Grid>
+        <Grid x:Name="BackgroundGrid" Grid.ColumnSpan="2" Grid.RowSpan="3" Background="White"/>
 
-            <Grid x:Name="BlackOption" Grid.Column="1" Grid.Row="0" Background="#FF333333">
-                <i:Interaction.Behaviors>
-                    <i:BehaviorCollection>
-                        <core:EventTriggerBehavior EventName="Tapped" SourceObject="{Binding ElementName=BlackOption}">
-                            <core:ChangePropertyAction TargetObject="{Binding ElementName=BackgroundGrid}" PropertyName="Background" >
-                                <core:ChangePropertyAction.Value>
-                                    <SolidColorBrush Color="#FF333333"/>
-                                </core:ChangePropertyAction.Value>
-                            </core:ChangePropertyAction>
-                        </core:EventTriggerBehavior>
-                    </i:BehaviorCollection>
-                </i:Interaction.Behaviors>
-                <TextBlock Foreground="White" FontSize="14" VerticalAlignment="Center" HorizontalAlignment="Center" Text="Dark (#FF333333)"/>
-            </Grid>
-            
-            <Grid Grid.ColumnSpan="2" Grid.Row="1" Margin="10" VerticalAlignment="Center">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="auto"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="auto"/>
-                </Grid.ColumnDefinitions>
-                <TextBlock Grid.Column="0" Text="Alpha" FontSize="16" Foreground="{Binding ElementName=CurrentBackgroundOpacityHint, Path=Foreground}" Margin="0,0,5,0"/>
-                <Slider x:Name="RootBackgroundOpacitySlider" Grid.Column="1" Minimum="0" MaxHeight="100" SmallChange="1" LargeChange="5" Value="100" ValueChanged="RootBackgroundOpacitySlider_ValueChanged" Margin="0,-17,0,-32"/>
-                <TextBlock Grid.Column="2" x:Name="CurrentBackgroundOpacityHint" Text="{Binding ElementName=RootBackgroundOpacitySlider, Path=Value}" FontSize="16" Foreground="{Binding ElementName=BackgroundGrid, Path=Background, Converter={StaticResource colorDiffConverter}}" Margin="5,0,0,0"/>
-            </Grid>
-
-            <ListView Grid.ColumnSpan="2" Grid.Row="2" ItemsSource="{Binding DemoItems}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10">
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="200"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <Grid Grid.ColumnSpan="2">
-                                <Grid.Background>
-                                    <SolidColorBrush x:Name="backgroundSolidColorBrush" Color="{Binding BackgroundColor}" Opacity="{Binding BackgroundOpacity}"/>
-                                </Grid.Background>
-                            </Grid>
-                            <Image Source="{Binding ImageUri}" Grid.Column="0" Margin="10" Stretch="Uniform"/>
-                            <StackPanel Grid.Column="1" VerticalAlignment="Center">
-                                <TextBlock Text="{Binding ColorTypeName}" Foreground="White" FontSize="18"/>
-                                <TextBlock Text="{Binding ColorTypeName}" FontSize="18">
-                                    <TextBlock.Foreground>
-                                        <SolidColorBrush Color="{Binding ElementName=backgroundSolidColorBrush, Path=Color, Converter={StaticResource colorDiffConverter}}"/>
-                                    </TextBlock.Foreground>
-                                </TextBlock>
-                                <TextBlock Text="{Binding ColorTypeName}" FontSize="18">
-                                    <TextBlock.Foreground>
-                                        <SolidColorBrush Color="{Binding ElementName=backgroundSolidColorBrush, Path=Color, Converter={StaticResource colorSimilarConverter}}"/>
-                                    </TextBlock.Foreground>
-                                </TextBlock>
-                            </StackPanel>
-                        </Grid>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-                <ListView.ItemContainerStyle>
-                    <Style TargetType="ListViewItem">
-                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                    </Style>
-                </ListView.ItemContainerStyle>
-            </ListView>
+        <!--切換背景為白底-->
+        <Grid x:Name="WhiteOption" Grid.Column="0" Grid.Row="0" Background="White">
+            <i:Interaction.Behaviors>
+                <i:BehaviorCollection>
+                    <core:EventTriggerBehavior EventName="Tapped" SourceObject="{Binding ElementName=WhiteOption}">
+                        <core:ChangePropertyAction TargetObject="{Binding ElementName=BackgroundGrid}" PropertyName="Background" >
+                            <core:ChangePropertyAction.Value>
+                                <SolidColorBrush Color="White"/>
+                            </core:ChangePropertyAction.Value>
+                        </core:ChangePropertyAction>
+                    </core:EventTriggerBehavior>
+                </i:BehaviorCollection>
+            </i:Interaction.Behaviors>
+            <TextBlock Foreground="Black" FontSize="14" VerticalAlignment="Center" HorizontalAlignment="Center" Text="Light (#FFFFFFFF)"/>
         </Grid>
 
-        <ProgressBar x:Name="DemoProgressBar" Visibility="Collapsed"/>
+        <!--切換背景為黑底-->
+        <Grid x:Name="BlackOption" Grid.Column="1" Grid.Row="0" Background="#FF333333">
+            <i:Interaction.Behaviors>
+                <i:BehaviorCollection>
+                    <core:EventTriggerBehavior EventName="Tapped" SourceObject="{Binding ElementName=BlackOption}">
+                        <core:ChangePropertyAction TargetObject="{Binding ElementName=BackgroundGrid}" PropertyName="Background" >
+                            <core:ChangePropertyAction.Value>
+                                <SolidColorBrush Color="#FF333333"/>
+                            </core:ChangePropertyAction.Value>
+                        </core:ChangePropertyAction>
+                    </core:EventTriggerBehavior>
+                </i:BehaviorCollection>
+            </i:Interaction.Behaviors>
+            <TextBlock Foreground="White" FontSize="14" VerticalAlignment="Center" HorizontalAlignment="Center" Text="Dark (#FF333333)"/>
+        </Grid>
+
+        <Grid Grid.ColumnSpan="2" Grid.Row="1" Margin="10" VerticalAlignment="Center">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
+            <!--調整背景透明度-->
+            <TextBlock Grid.Column="0" Text="Alpha" FontSize="16" Foreground="{Binding ElementName=CurrentBackgroundOpacityHint, Path=Foreground}" Margin="0,0,5,0"/>
+            <Slider x:Name="RootBackgroundOpacitySlider" Grid.Column="1" Minimum="0" MaxHeight="100" SmallChange="1" LargeChange="5" Value="100" ValueChanged="RootBackgroundOpacitySlider_ValueChanged" Margin="0,-17,0,-32"/>
+            <TextBlock Grid.Column="2" x:Name="CurrentBackgroundOpacityHint" Text="{Binding ElementName=RootBackgroundOpacitySlider, Path=Value}" FontSize="16" Foreground="{Binding ElementName=BackgroundGrid, Path=Background, Converter={StaticResource colorDiffConverter}}" Margin="5,0,0,0"/>
+        </Grid>
+
+        <ListView Grid.ColumnSpan="2" Grid.Row="2" ItemsSource="{Binding DemoItems}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="200"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid Grid.ColumnSpan="2">
+                            <Grid.Background>
+                                <SolidColorBrush x:Name="backgroundSolidColorBrush" Color="{Binding BackgroundColor}" Opacity="{Binding BackgroundOpacity}"/>
+                            </Grid.Background>
+                        </Grid>
+                        <Image Source="{Binding ImageUri}" Grid.Column="0" Margin="10" Stretch="Uniform"/>
+                        <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                            <!--色系名稱-->
+                            <TextBlock Text="{Binding ColorTypeName}" Foreground="White" FontSize="18"/>
+
+                            <!--此色系色碼-->
+                            <TextBlock Text="{Binding ElementName=backgroundSolidColorBrush, Path=Color, Converter={StaticResource colorToStringConverter}}" FontSize="18" Foreground="White"/>
+
+                            <!--與背景相反的顏色-->
+                            <TextBlock Text="{Binding ElementName=TextSample1Brush, Path=Color, Converter={StaticResource colorToStringConverter}}" FontSize="18">
+                                <TextBlock.Foreground>
+                                    <SolidColorBrush x:Name="TextSample1Brush" Color="{Binding ElementName=backgroundSolidColorBrush, Path=Color, Converter={StaticResource colorDiffConverter}}"/>
+                                </TextBlock.Foreground>
+                            </TextBlock>
+
+                            <!--與背景相似的顏色-->
+                            <TextBlock Text="{Binding ElementName=TextSample2Brush, Path=Color, Converter={StaticResource colorToStringConverter}}" FontSize="18">
+                                <TextBlock.Foreground>
+                                    <SolidColorBrush x:Name="TextSample2Brush" Color="{Binding ElementName=backgroundSolidColorBrush, Path=Color, Converter={StaticResource colorSimilarConverter}}"/>
+                                </TextBlock.Foreground>
+                            </TextBlock>
+                        </StackPanel>
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                </Style>
+            </ListView.ItemContainerStyle>
+        </ListView>
+
+        <ProgressBar x:Name="DemoProgressBar" Visibility="Collapsed" Grid.ColumnSpan="2" Grid.RowSpan="3"/>
     </Grid>
 </Page>

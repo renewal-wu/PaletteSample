@@ -56,23 +56,41 @@ namespace KKBOX.Utility
                 float targetMovement = index * movement;
                 float maxMovement = index * movement;
 
-                mVibrantSwatch = findColor(TARGET_NORMAL_LUMA + targetMovement, MIN_NORMAL_LUMA + minMovement, MAX_NORMAL_LUMA + maxMovement,
-                        TARGET_VIBRANT_SATURATION + targetMovement, MIN_VIBRANT_SATURATION + minMovement, 1f + maxMovement);
+                if (mVibrantSwatch == null)
+                {
+                    mVibrantSwatch = findColor(TARGET_NORMAL_LUMA + targetMovement, MIN_NORMAL_LUMA + minMovement, MAX_NORMAL_LUMA + maxMovement,
+                            TARGET_VIBRANT_SATURATION + targetMovement, MIN_VIBRANT_SATURATION + minMovement, 1f + maxMovement);
+                }
 
-                mLightVibrantSwatch = findColor(TARGET_LIGHT_LUMA + targetMovement, MIN_LIGHT_LUMA + minMovement, 1f + maxMovement,
-                        TARGET_VIBRANT_SATURATION + targetMovement, MIN_VIBRANT_SATURATION + minMovement, 1f + maxMovement);
+                if (mLightVibrantSwatch == null)
+                {
+                    mLightVibrantSwatch = findColor(TARGET_LIGHT_LUMA + targetMovement, MIN_LIGHT_LUMA + minMovement, 1f + maxMovement,
+                            TARGET_VIBRANT_SATURATION + targetMovement, MIN_VIBRANT_SATURATION + minMovement, 1f + maxMovement);
+                }
 
-                mDarkVibrantSwatch = findColor(TARGET_DARK_LUMA + targetMovement, 0f + minMovement, MAX_DARK_LUMA + maxMovement,
-                        TARGET_VIBRANT_SATURATION + targetMovement, MIN_VIBRANT_SATURATION + minMovement, 1f + maxMovement);
+                if (mDarkVibrantSwatch == null)
+                {
+                    mDarkVibrantSwatch = findColor(TARGET_DARK_LUMA + targetMovement, 0f + minMovement, MAX_DARK_LUMA + maxMovement,
+                            TARGET_VIBRANT_SATURATION + targetMovement, MIN_VIBRANT_SATURATION + minMovement, 1f + maxMovement);
+                }
 
-                mMutedSwatch = findColor(TARGET_NORMAL_LUMA + targetMovement, MIN_NORMAL_LUMA + minMovement, MAX_NORMAL_LUMA + maxMovement,
-                        TARGET_MUTED_SATURATION + targetMovement, 0f + minMovement, MAX_MUTED_SATURATION + maxMovement);
+                if (mMutedSwatch == null)
+                {
+                    mMutedSwatch = findColor(TARGET_NORMAL_LUMA + targetMovement, MIN_NORMAL_LUMA + minMovement, MAX_NORMAL_LUMA + maxMovement,
+                            TARGET_MUTED_SATURATION + targetMovement, 0f + minMovement, MAX_MUTED_SATURATION + maxMovement);
+                }
 
-                mLightMutedColor = findColor(TARGET_LIGHT_LUMA + targetMovement, MIN_LIGHT_LUMA + minMovement, 1f + maxMovement,
-                        TARGET_MUTED_SATURATION + targetMovement, 0f + minMovement, MAX_MUTED_SATURATION + maxMovement);
+                if (mLightMutedColor == null)
+                {
+                    mLightMutedColor = findColor(TARGET_LIGHT_LUMA + targetMovement, MIN_LIGHT_LUMA + minMovement, 1f + maxMovement,
+                            TARGET_MUTED_SATURATION + targetMovement, 0f + minMovement, MAX_MUTED_SATURATION + maxMovement);
+                }
 
-                mDarkMutedSwatch = findColor(TARGET_DARK_LUMA + targetMovement, 0f + minMovement, MAX_DARK_LUMA + maxMovement,
-                        TARGET_MUTED_SATURATION + targetMovement, 0f + minMovement, MAX_MUTED_SATURATION + maxMovement);
+                if (mDarkMutedSwatch == null)
+                {
+                    mDarkMutedSwatch = findColor(TARGET_DARK_LUMA + targetMovement, 0f + minMovement, MAX_DARK_LUMA + maxMovement,
+                            TARGET_MUTED_SATURATION + targetMovement, 0f + minMovement, MAX_MUTED_SATURATION + maxMovement);
+                }
 
                 index++;
             } while (generateEmptySwatches() && index <= 5);

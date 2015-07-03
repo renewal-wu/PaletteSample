@@ -84,6 +84,7 @@
     </Compile>
     <Compile Include="Converter\ColorDiffConverter.cs" />
     <Compile Include="Converter\ColorSimilarConverter.cs" />
+    <Compile Include="Converter\ColorToStringConverter.cs" />
     <Compile Include="DemoColorPage.xaml.cs">
       <DependentUpon>DemoColorPage.xaml</DependentUpon>
     </Compile>
