@@ -31,7 +31,7 @@ namespace KKBOX.Utility
 
             Color[] pixels = new Color[width * height];
 
-            bitmap.GetPixels(pixels, width, height);
+            await WriteableBitmapExtension.GetPixels(bitmap, pixels, width, height);
 
             return new ColorCutQuantizer(new ColorHistogram(pixels), maxColors);
         }

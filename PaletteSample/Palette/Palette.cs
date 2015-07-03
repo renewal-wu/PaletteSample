@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using Windows.Graphics.Imaging;
+using Windows.Storage.Streams;
 using Windows.UI;
 using Windows.UI.Xaml.Media.Imaging;
 
@@ -445,26 +447,25 @@ namespace KKBOX.Utility
 
     public static class WriteableBitmapExtension
     {
-        public static void GetPixels(this WriteableBitmap bitmap, Color[] pixels, Int32 width, Int32 height)
+        public static async Task GetPixels(WriteableBitmap bitmap, Color[] pixels, Int32 width, Int32 height)
         {
-            if (bitmap != null && pixels != null)
+            IRandomAccessStream bitmapStream = new InMemoryRandomAccessStream();
+            await bitmap.ToStreamAsJpeg(bitmapStream);
+
+            var bitmapDecoder = await BitmapDecoder.CreateAsync(bitmapStream);
+            var pixelProvider = await bitmapDecoder.GetPixelDataAsync();
+            Byte[] byteArray = pixelProvider.DetachPixelData();
+
+            for (var i = 0; i < height; i++)
             {
-                for (Int32 i = 0; i < width; i++)
+                for (var j = 0; j < width; j++)
                 {
-                    for (Int32 j = 0; j < height; j++)
-                    {
-                        Int32 index = (i * height) + j;
-                        pixels[index] = bitmap.GetPixel(i, j);
-                    }
+                    Int32 r = byteArray[(i * height + j) * 4 + 0];
+                    Int32 g = byteArray[(i * height + j) * 4 + 1];
+                    Int32 b = byteArray[(i * height + j) * 4 + 2];
+
+                    pixels[(i * height + j)] = Color.FromArgb(0xFF, (byte)r, (byte)g, (byte)b);
                 }
-                //IRandomAccessStream bitmapStream = new InMemoryRandomAccessStream();
-                //await bitmap.ToStream(bitmapStream, new Guid());
-
-                //var bitmapDecoder = await BitmapDecoder.CreateAsync(bitmapStream);
-
-                //var pixelProvider = await bitmapDecoder.GetPixelDataAsync();
-
-                //pixelProvider.DetachPixelData().CopyTo(pixels, pixels.Length);
             }
         }
     }
