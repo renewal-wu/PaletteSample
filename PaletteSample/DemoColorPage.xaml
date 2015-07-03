@@ -13,6 +13,7 @@
 
     <Page.Resources>
         <converter:ColorDiffConverter x:Key="colorDiffConverter"/>
+        <converter:ColorSimilarConverter x:Key="colorSimilarConverter"/>
     </Page.Resources>
 
     <Grid>
@@ -89,6 +90,11 @@
                                 <TextBlock Text="{Binding ColorTypeName}" FontSize="18">
                                     <TextBlock.Foreground>
                                         <SolidColorBrush Color="{Binding ElementName=backgroundSolidColorBrush, Path=Color, Converter={StaticResource colorDiffConverter}}"/>
+                                    </TextBlock.Foreground>
+                                </TextBlock>
+                                <TextBlock Text="{Binding ColorTypeName}" FontSize="18">
+                                    <TextBlock.Foreground>
+                                        <SolidColorBrush Color="{Binding ElementName=backgroundSolidColorBrush, Path=Color, Converter={StaticResource colorSimilarConverter}}"/>
                                     </TextBlock.Foreground>
                                 </TextBlock>
                             </StackPanel>

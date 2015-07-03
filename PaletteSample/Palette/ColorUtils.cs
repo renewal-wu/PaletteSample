@@ -135,5 +135,38 @@ namespace KKBOX.Utility
 
             return Color.FromArgb(0xFF, (byte)r, (byte)g, (byte)b);
         }
+
+        public static Color SimilarColor(Color originalColor)
+        {
+            float[] mTempHsl = new float[3];
+            RGBtoHSL(originalColor.R, originalColor.G, originalColor.B, mTempHsl);
+
+            Int32 index = 0;
+            float baseMovement = 0.05f;
+            float baseParameter = 0.35f;
+
+            do
+            {
+                float currentMovement = (baseParameter - (index * baseMovement));
+                float newLumaUpper = mTempHsl[2] + currentMovement;
+                float newLumaLower = mTempHsl[2] - currentMovement;
+
+                if (newLumaUpper <= 1.0f)
+                {
+                    mTempHsl[2] = newLumaUpper;
+                    return HSLtoRGB(mTempHsl);
+                }
+                else if (newLumaLower >= 0f)
+                {
+                    mTempHsl[2] = newLumaLower;
+                    return HSLtoRGB(mTempHsl);
+                }
+
+                index++;
+            } while (index <= 7);
+
+            mTempHsl[2] = 0.3f;
+            return HSLtoRGB(mTempHsl);
+        }
     }
 }
