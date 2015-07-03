@@ -48,26 +48,34 @@ namespace KKBOX.Utility
             mSwatches = swatches;
             mHighestPopulation = findMaxPopulation();
 
-            mVibrantSwatch = findColor(TARGET_NORMAL_LUMA, MIN_NORMAL_LUMA, MAX_NORMAL_LUMA,
-                    TARGET_VIBRANT_SATURATION, MIN_VIBRANT_SATURATION, 1f);
+            Int32 index = 0;
+            float movement = 0.1f;
+            do
+            {
+                float minMovement = -(index * movement);
+                float targetMovement = index * movement;
+                float maxMovement = index * movement;
 
-            mLightVibrantSwatch = findColor(TARGET_LIGHT_LUMA, MIN_LIGHT_LUMA, 1f,
-                    TARGET_VIBRANT_SATURATION, MIN_VIBRANT_SATURATION, 1f);
+                mVibrantSwatch = findColor(TARGET_NORMAL_LUMA + targetMovement, MIN_NORMAL_LUMA + minMovement, MAX_NORMAL_LUMA + maxMovement,
+                        TARGET_VIBRANT_SATURATION + targetMovement, MIN_VIBRANT_SATURATION + minMovement, 1f + maxMovement);
 
-            mDarkVibrantSwatch = findColor(TARGET_DARK_LUMA, 0f, MAX_DARK_LUMA,
-                    TARGET_VIBRANT_SATURATION, MIN_VIBRANT_SATURATION, 1f);
+                mLightVibrantSwatch = findColor(TARGET_LIGHT_LUMA + targetMovement, MIN_LIGHT_LUMA + minMovement, 1f + maxMovement,
+                        TARGET_VIBRANT_SATURATION + targetMovement, MIN_VIBRANT_SATURATION + minMovement, 1f + maxMovement);
 
-            mMutedSwatch = findColor(TARGET_NORMAL_LUMA, MIN_NORMAL_LUMA, MAX_NORMAL_LUMA,
-                    TARGET_MUTED_SATURATION, 0f, MAX_MUTED_SATURATION);
+                mDarkVibrantSwatch = findColor(TARGET_DARK_LUMA + targetMovement, 0f + minMovement, MAX_DARK_LUMA + maxMovement,
+                        TARGET_VIBRANT_SATURATION + targetMovement, MIN_VIBRANT_SATURATION + minMovement, 1f + maxMovement);
 
-            mLightMutedColor = findColor(TARGET_LIGHT_LUMA, MIN_LIGHT_LUMA, 1f,
-                    TARGET_MUTED_SATURATION, 0f, MAX_MUTED_SATURATION);
+                mMutedSwatch = findColor(TARGET_NORMAL_LUMA + targetMovement, MIN_NORMAL_LUMA + minMovement, MAX_NORMAL_LUMA + maxMovement,
+                        TARGET_MUTED_SATURATION + targetMovement, 0f + minMovement, MAX_MUTED_SATURATION + maxMovement);
 
-            mDarkMutedSwatch = findColor(TARGET_DARK_LUMA, 0f, MAX_DARK_LUMA,
-                    TARGET_MUTED_SATURATION, 0f, MAX_MUTED_SATURATION);
+                mLightMutedColor = findColor(TARGET_LIGHT_LUMA + targetMovement, MIN_LIGHT_LUMA + minMovement, 1f + maxMovement,
+                        TARGET_MUTED_SATURATION + targetMovement, 0f + minMovement, MAX_MUTED_SATURATION + maxMovement);
 
-            // Now try and generate any missing colors
-            generateEmptySwatches();
+                mDarkMutedSwatch = findColor(TARGET_DARK_LUMA + targetMovement, 0f + minMovement, MAX_DARK_LUMA + maxMovement,
+                        TARGET_MUTED_SATURATION + targetMovement, 0f + minMovement, MAX_MUTED_SATURATION + maxMovement);
+
+                index++;
+            } while (generateEmptySwatches() && index <= 5);
         }
 
         public static async Task<Palette> Generate(WriteableBitmap bitmap)
@@ -286,7 +294,7 @@ namespace KKBOX.Utility
         /**
          * Try and generate any missing swatches from the swatches we did find.
          */
-        private void generateEmptySwatches()
+        private Boolean generateEmptySwatches()
         {
             if (mVibrantSwatch == null)
             {
@@ -383,6 +391,8 @@ namespace KKBOX.Utility
                     mLightMutedColor = new Swatch(ColorUtils.HSLtoRGB(newHsl), 0);
                 }
             }
+
+            return checkAnySwtchEmpty();
         }
 
         /**
@@ -391,6 +401,12 @@ namespace KKBOX.Utility
         private int findMaxPopulation()
         {
             return mSwatches.Max(s => s.getPopulation());
+        }
+
+        private bool checkAnySwtchEmpty()
+        {
+            return mVibrantSwatch == null || mDarkVibrantSwatch == null || mVibrantSwatch == null ||
+                mLightMutedColor == null || mDarkMutedSwatch == null || mMutedSwatch == null;
         }
 
         private static float createComparisonValue(float saturation, float targetSaturation,
