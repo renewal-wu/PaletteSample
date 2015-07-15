@@ -82,12 +82,17 @@
                             <ColumnDefinition Width="200"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <Grid Grid.ColumnSpan="2">
+                        <Grid x:Name="sourceImage" Grid.ColumnSpan="2">
                             <Grid.Background>
                                 <SolidColorBrush x:Name="backgroundSolidColorBrush" Color="{Binding BackgroundColor}" Opacity="{Binding BackgroundOpacity}"/>
                             </Grid.Background>
                         </Grid>
                         <Image Source="{Binding ImageUri}" Grid.Column="0" Margin="10" Stretch="Uniform"/>
+                        <Grid Grid.Column="1">
+                            <Grid.Background>
+                                <ImageBrush ImageSource="{Binding BitmapSource}"/>
+                            </Grid.Background>
+                        </Grid>
                         <StackPanel Grid.Column="1" VerticalAlignment="Center">
                             <!--色系名稱-->
                             <TextBlock Text="{Binding ColorTypeName}" Foreground="White" FontSize="18"/>

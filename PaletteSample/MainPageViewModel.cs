@@ -11,7 +11,7 @@ namespace PaletteSample
         {
             ImageSources = new List<Uri>();
 
-            for (Int32 i = 1; i < 103; i++)
+            for (Int32 i = 1; i < 104; i++)
             {
                 ImageSources.Add(new Uri("ms-appx:///Assets/Sample/image_" + i.ToString() + ".jpg", UriKind.Absolute));
             }

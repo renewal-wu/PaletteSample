@@ -89,6 +89,7 @@
       <DependentUpon>DemoColorPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="DemoColorPageViewModel.cs" />
+    <Compile Include="GaussianBlurHelper.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
@@ -115,6 +116,7 @@
     <Content Include="Assets\Sample\image_100.jpg" />
     <Content Include="Assets\Sample\image_101.jpg" />
     <Content Include="Assets\Sample\image_102.jpg" />
+    <Content Include="Assets\Sample\image_103.jpg" />
     <Content Include="Assets\Sample\image_11.jpg" />
     <Content Include="Assets\Sample\image_12.jpg" />
     <Content Include="Assets\Sample\image_13.jpg" />

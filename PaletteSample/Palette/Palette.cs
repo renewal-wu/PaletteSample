@@ -12,7 +12,7 @@ namespace KKBOX.Utility
 {
     public class Palette
     {
-        private static readonly int CALCULATE_BITMAP_MIN_DIMENSION = 100;
+        private static readonly int CALCULATE_BITMAP_MIN_DIMENSION = 50;
         private static readonly int DEFAULT_CALCULATE_NUMBER_COLORS = 16;
 
         private static readonly float TARGET_DARK_LUMA = 0.26f;
@@ -163,6 +163,11 @@ namespace KKBOX.Utility
             return new ReadOnlyCollection<Swatch>(mSwatches);
         }
 
+        public Swatch getFirstSwatch()
+        {
+            return getSwatches().FirstOrDefault();
+        }
+
         /**
          * Returns the most vibrant swatch in the palette. Might be null.
          */
@@ -209,6 +214,12 @@ namespace KKBOX.Utility
         public Swatch getDarkMutedSwatch()
         {
             return mDarkMutedSwatch;
+        }
+
+        public Color geFirstColor(Color defaultColor)
+        {
+            var firstSwatch = getFirstSwatch();
+            return firstSwatch != null ? firstSwatch.GetRgb() : defaultColor;
         }
 
         /**
@@ -494,9 +505,9 @@ namespace KKBOX.Utility
             {
                 for (var j = 0; j < width; j++)
                 {
-                    Int32 r = byteArray[(i * height + j) * 4 + 0];
+                    Int32 r = byteArray[(i * height + j) * 4 + 2];
                     Int32 g = byteArray[(i * height + j) * 4 + 1];
-                    Int32 b = byteArray[(i * height + j) * 4 + 2];
+                    Int32 b = byteArray[(i * height + j) * 4 + 0];
 
                     pixels[(i * height + j)] = Color.FromArgb(0xFF, (byte)r, (byte)g, (byte)b);
                 }

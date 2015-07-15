@@ -2,6 +2,7 @@
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using Windows.UI;
 using Windows.UI.Xaml.Media.Imaging;
@@ -19,10 +20,18 @@ namespace PaletteSample
         public async Task SetDemoItem(Uri imageUri)
         {
             DemoItems.Clear();
-
             WriteableBitmap writeableBitmap = await BitmapFactory.New(1, 1).FromContent(imageUri);
+
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
+
             Palette palette = await Palette.Generate(writeableBitmap);
 
+            stopwatch.Stop();
+            Debug.WriteLine("Palette.Generate time:" + stopwatch.ElapsedMilliseconds.ToString());
+
+            var middleGaussian = GaussianBlurHelper.GetMiddleGaussianImage(writeableBitmap);
+            DemoItems.Add(generateDemoItemData(imageUri, palette.geFirstColor(Colors.Transparent), "First", middleGaussian));
             DemoItems.Add(generateDemoItemData(imageUri, palette.getVibrantColor(Colors.Transparent), "Vibrant"));
             DemoItems.Add(generateDemoItemData(imageUri, palette.getLightVibrantColor(Colors.Transparent), "LightVibrant"));
             DemoItems.Add(generateDemoItemData(imageUri, palette.getDarkVibrantColor(Colors.Transparent), "DarkVibrant"));
@@ -31,13 +40,14 @@ namespace PaletteSample
             DemoItems.Add(generateDemoItemData(imageUri, palette.getDarkMutedColor(Colors.Transparent), "DarkMuted"));
         }
 
-        private DemoItemData generateDemoItemData(Uri imageUri, Color color, String colorTypeName)
+        private DemoItemData generateDemoItemData(Uri imageUri, Color color, String colorTypeName, BitmapSource bitmapSource = null)
         {
             return new DemoItemData()
             {
                 ImageUri = imageUri,
                 BackgroundColor = color,
-                ColorTypeName = color == Colors.Transparent ? colorTypeName + ", Failed" : colorTypeName
+                ColorTypeName = color == Colors.Transparent ? colorTypeName + ", Failed" : colorTypeName,
+                BitmapSource = bitmapSource
             };
         }
 
@@ -109,6 +119,20 @@ namespace PaletteSample
             {
                 backgroundOpacity = value;
                 NotifyPropertyChanged("BackgroundOpacity");
+            }
+        }
+
+        private BitmapSource bitmapSource = null;
+        public BitmapSource BitmapSource
+        {
+            get
+            {
+                return bitmapSource;
+            }
+            set
+            {
+                bitmapSource = value;
+                NotifyPropertyChanged("BitmapSource");
             }
         }
 
