@@ -163,7 +163,7 @@ namespace KKBOX.Utility
             return new ReadOnlyCollection<Swatch>(mSwatches);
         }
 
-        public Swatch getFirstSwatch()
+        public Swatch getMainSwatch()
         {
             return getSwatches().FirstOrDefault();
         }
@@ -216,10 +216,21 @@ namespace KKBOX.Utility
             return mDarkMutedSwatch;
         }
 
-        public Color geFirstColor(Color defaultColor)
+        public Color getMainColor(Color defaultColor)
         {
-            var firstSwatch = getFirstSwatch();
-            return firstSwatch != null ? firstSwatch.GetRgb() : defaultColor;
+            var mainSwatch = getMainSwatch();
+            return mainSwatch != null ? mainSwatch.GetRgb() : defaultColor;
+        }
+
+        public Color getDarkMainColor(Color defaultColor)
+        {
+            var mainSwatch = getMainSwatch();
+
+            float[] newHsl = copyHslValues(mainSwatch);
+            newHsl[2] = TARGET_DARK_LUMA;
+            var mainDarkSwatch = new Swatch(ColorUtils.HSLtoRGB(newHsl), 0);
+
+            return mainDarkSwatch != null ? mainDarkSwatch.GetRgb() : defaultColor;
         }
 
         /**

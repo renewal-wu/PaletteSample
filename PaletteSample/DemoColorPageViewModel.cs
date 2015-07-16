@@ -25,13 +25,15 @@ namespace PaletteSample
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
 
+            // 可透過調降 Palette.CALCULATE_BITMAP_MIN_DIMENSION 數值來加快取顏色速度
             Palette palette = await Palette.Generate(writeableBitmap);
 
             stopwatch.Stop();
             Debug.WriteLine("Palette.Generate time:" + stopwatch.ElapsedMilliseconds.ToString());
 
             var middleGaussian = GaussianBlurHelper.GetMiddleGaussianImage(writeableBitmap);
-            DemoItems.Add(generateDemoItemData(imageUri, palette.geFirstColor(Colors.Transparent), "First", middleGaussian));
+            DemoItems.Add(generateDemoItemData(imageUri, palette.getMainColor(Colors.Transparent), "MainColor"));
+            DemoItems.Add(generateDemoItemData(imageUri, palette.getDarkMainColor(Colors.Transparent), "DarkMainColor"));
             DemoItems.Add(generateDemoItemData(imageUri, palette.getVibrantColor(Colors.Transparent), "Vibrant"));
             DemoItems.Add(generateDemoItemData(imageUri, palette.getLightVibrantColor(Colors.Transparent), "LightVibrant"));
             DemoItems.Add(generateDemoItemData(imageUri, palette.getDarkVibrantColor(Colors.Transparent), "DarkVibrant"));

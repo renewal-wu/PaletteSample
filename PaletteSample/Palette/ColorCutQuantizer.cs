@@ -14,6 +14,8 @@ namespace KKBOX.Utility
         private static readonly float BLACK_MAX_LIGHTNESS = 0.05f;
         private static readonly float WHITE_MIN_LIGHTNESS = 0.95f;
 
+        private static readonly Boolean IS_ENABLE_IGNORE = true;
+
         private const int COMPONENT_RED = -3;
         private const int COMPONENT_GREEN = -2;
         private const int COMPONENT_BLUE = -1;
@@ -407,7 +409,7 @@ namespace KKBOX.Utility
 
         private static Boolean shouldIgnoreColor(float[] hslColor)
         {
-            return isWhite(hslColor) || isBlack(hslColor) || isNearRedILine(hslColor);
+            return IS_ENABLE_IGNORE && (isWhite(hslColor) || isBlack(hslColor) || isNearRedILine(hslColor));
         }
 
         /**
